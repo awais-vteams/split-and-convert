@@ -1,0 +1,22 @@
+#!/bin/bash
+# -----------------------------------
+# @author M Awais <awais.sds@nxvt.com>
+# @created 2017-08-07 01:25 PM
+# Splitting and converting ndjson to csv
+# i:e;  Spotify daily sales ndjosn streaming.
+# $1 => stream file
+# $2 => no of lines to split
+# $3 => folder path
+# -----------------------------------
+
+# Split to multiple files according to no of lines
+tail -n +2 $1 | split -l $2 - "$3stream_"
+
+for file in "$3stream_"*
+do
+    # Convert to csv with in2csv python script
+    in2csv -f=ndjson ${file} > ${file}.csv
+
+    # remove temporary stream file
+    rm -f ${file}
+done
